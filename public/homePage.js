@@ -1,7 +1,9 @@
 const logoutButton = new LogoutButton()
 
-logoutButton.action = (data => {
-    ApiConnector.logout(data, (res) => {
-        console.log(res)
-    })
-   })
+logoutButton.action = () => { 
+    ApiConnector.logout((res) => { 
+        if(res.success){ 
+            location.reload() 
+        } 
+    }) 
+}
