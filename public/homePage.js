@@ -8,6 +8,14 @@ logoutButton.action = () => {
     }) 
 }
 
+ApiConnector.current((res) => {
+  if (res.success) {
+        ProfileWidget.showProfile(res.data)
+        return
+      }
+  console.log(res.error)
+})  
+
 const ratesBoard = new RatesBoard();
 
 function updateStocks() {
@@ -22,3 +30,9 @@ function updateStocks() {
   }
   updateStocks();
   setInterval(updateSocks, 1000 * 60);
+
+  const moneyManager = new MoneyManager();  
+
+moneyManager.addMoneyCallback = () => {
+  ApiConnector.addMoney()
+}
