@@ -60,6 +60,18 @@
         "EUR": 600,
         "NTC": 90000
       }
+    },
+    {
+      "created_at": "2022-03-14T17:22:22.224Z",
+      "login": "zakurdaeva_dsh",
+      "password": "demo",
+      "id": 6,
+      "balance": {
+        "RUB": 268,
+        "USD": 0,
+        "EUR": 0,
+        "NTC": 0
+      }
     }
   ],
   "favorites": {

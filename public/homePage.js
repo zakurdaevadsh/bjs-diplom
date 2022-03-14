@@ -1,3 +1,4 @@
+const favoritesWidget = new FavoritesWidget();
 const logoutButton = new LogoutButton()
 
 logoutButton.action = () => {
@@ -13,7 +14,7 @@ ApiConnector.current((res) => {
     ProfileWidget.showProfile(res.data)
     return
   }
-  console.log(res.error)
+  favoritesWidget.setMessage(false, res.error)
 })
 
 const ratesBoard = new RatesBoard();
@@ -25,7 +26,7 @@ function updateStocks() {
       ratesBoard.fillTable(res.data)
       return
     }
-    console.log(res.error)
+    favoritesWidget.setMessage(false, res.error)
   })
 }
 updateStocks();
@@ -36,16 +37,16 @@ const moneyManager = new MoneyManager();
 moneyManager.addMoneyCallback = (params) => {
   ApiConnector.addMoney(params, (res) => {
     if (res.saccess === false) {
-      alert("Ошибка запроса")
+      favoritesWidget.setMessage(false, res.error)
       return
     }
     ApiConnector.current((res) => {
       if (res.success) {
         ProfileWidget.showProfile(res.data)
-        alert("Баланс пополнен")
+        favoritesWidget.setMessage(true, "Баланс пополнен")
         return
       }
-      alert("Ошибка запроса")
+      favoritesWidget.setMessage(false, res.error)
     })
   })
 }
@@ -53,16 +54,16 @@ moneyManager.addMoneyCallback = (params) => {
 moneyManager.conversionMoneyCallback = (params) => {
   ApiConnector.convertMoney(params, (res) => {
     if (res.success === false) {
-      alert("Ошибка запроса")
+      favoritesWidget.setMessage(false, res.error)
       return
     }
     ApiConnector.current((res) => {
       if (res.success) {
         ProfileWidget.showProfile(res.data)
-        alert("Конвертация выполнена успешно")
+        favoritesWidget.setMessage(true, "Конвертация выполнена успешно")
         return
       }
-      alert("Ошибка запроса")
+      favoritesWidget.setMessage(false, res.error)
     })
   })
 }
@@ -70,26 +71,24 @@ moneyManager.conversionMoneyCallback = (params) => {
 moneyManager.sendMoneyCallback = (params) => {
   ApiConnector.transferMoney(params, (res) => {
     if (res.success === false) {
-      alert("Ошибка запроса")
+      favoritesWidget.setMessage(false, res.error)
       return
     }
     ApiConnector.current((res) => {
       if (res.success) {
         ProfileWidget.showProfile(res.data)
-        alert("Перевод выполнен")
+        favoritesWidget.setMessage(true, "Перевод выполнен")
         return
       }
-      alert("Ошибка запроса")
+      favoritesWidget.setMessage(false, res.error)
     })
   })
 }
 
-const favoritesWidget = new FavoritesWidget();
 
 ApiConnector.getFavorites((res) => {
-  console.log(res)
   if(res.success === false){
-    alert("Ошибка запроса")
+    favoritesWidget.setMessage(false, res.error)
     return
   }
   favoritesWidget.clearTable()
@@ -99,9 +98,8 @@ ApiConnector.getFavorites((res) => {
 
 favoritesWidget.addUserCallback = (params) => {
   ApiConnector.addUserToFavorites(params, (res) => {
-    console.log(res)
     if(res.success === false){
-      alert("Ошибка запроса")
+      favoritesWidget.setMessage(false, res.error)
       return
     }
     favoritesWidget.clearTable()
@@ -112,9 +110,8 @@ favoritesWidget.addUserCallback = (params) => {
 
 favoritesWidget.removeUserCallback = (params) => {
   ApiConnector.removeUserFromFavorites(params, (res) => {
-    console.log(res)
     if(res.success === false){
-      alert("Ошибка запроса")
+      favoritesWidget.setMessage(false, res.error)
       return
     }
     favoritesWidget.clearTable()
