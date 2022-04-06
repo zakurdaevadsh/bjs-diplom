@@ -36,52 +36,40 @@ const moneyManager = new MoneyManager();
 
 moneyManager.addMoneyCallback = (params) => {
   ApiConnector.addMoney(params, (res) => {
-    if (res.saccess === false) {
-      favoritesWidget.setMessage(false, res.error)
+    if (res.success === true) {
+      moneyManager.setMessage(true, "Баланс пополнен")
+      ProfileWidget.showProfile(res.data)
       return
-    }
-    ApiConnector.current((res) => {
-      if (res.success) {
-        ProfileWidget.showProfile(res.data)
-        favoritesWidget.setMessage(true, "Баланс пополнен")
-        return
-      }
-      favoritesWidget.setMessage(false, res.error)
-    })
+    } 
+    moneyManager.setMessage(false, res.error)
   })
 }
 
 moneyManager.conversionMoneyCallback = (params) => {
   ApiConnector.convertMoney(params, (res) => {
     if (res.success === false) {
-      favoritesWidget.setMessage(false, res.error)
+      moneyManager.setMessage(false, res.error)
       return
     }
     ApiConnector.current((res) => {
       if (res.success) {
         ProfileWidget.showProfile(res.data)
-        favoritesWidget.setMessage(true, "Конвертация выполнена успешно")
+        moneyManager.setMessage(true, "Конвертация выполнена успешно")
         return
       }
-      favoritesWidget.setMessage(false, res.error)
+      moneyManager.setMessage(false, res.error)
     })
   })
 }
 
 moneyManager.sendMoneyCallback = (params) => {
   ApiConnector.transferMoney(params, (res) => {
-    if (res.success === false) {
-      favoritesWidget.setMessage(false, res.error)
+    if (res.success === true) {
+      ProfileWidget.showProfile(res.data)
+      moneyManager.setMessage(true, "Перевод выполнен")
       return
     }
-    ApiConnector.current((res) => {
-      if (res.success) {
-        ProfileWidget.showProfile(res.data)
-        favoritesWidget.setMessage(true, "Перевод выполнен")
-        return
-      }
-      favoritesWidget.setMessage(false, res.error)
-    })
+    moneyManager.setMessage(false, res.error)
   })
 }
 
